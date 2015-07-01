@@ -243,11 +243,14 @@ class Former
 	 */
 	public function getPost($name, $fallback = null)
 	{
-		$name     = str_replace(array('[', ']'), array('.', ''), $name);
-		$name     = trim($name, '.');
-		$oldValue = $this->app['request']->old($name, $fallback);
+/// vicvk: always ignore values passed via GET or POST
+///		$name     = str_replace(array('[', ']'), array('.', ''), $name);
+///		$name     = trim($name, '.');
+///		$oldValue = $this->app['request']->old($name, $fallback);
+///
+///		return $this->app['request']->input($name, $oldValue, true);
 
-		return $this->app['request']->input($name, $oldValue, true);
+		return $fallback;
 	}
 
 	////////////////////////////////////////////////////////////////////
