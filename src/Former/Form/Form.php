@@ -155,6 +155,26 @@ class Form extends FormerObject
 
 		// Add token if necessary
 		$closing = '</form>';
+
+		$classes = explode(' ', $this->attributes['class']);
+
+		// vicvk: if the form has .mylib-search-form class then add searchFormMode parameters 
+		// before the form closing tag
+		if (in_array('mylib-search-form', $classes)) {
+			$hidden_input = '';
+			$searchFormMode = $this->app['MyHtmlHelper']->getSearchFormMode();
+
+			if (is_array($searchFormMode)) {
+				$mode = $searchFormMode['mode'];
+				$param = $searchFormMode['param'];
+
+				if (($mode == 'search_route') || ($mode == 'base_search_url')) {
+					$hidden_input = "<input type=\"hidden\" name=\"_{$mode}\" value=\"{$param}\">";
+				}
+			}
+			$closing = $hidden_input.$closing;
+		}
+
 		if ($this->method != 'GET') {
 			$closing = $this->app['former']->token().$closing;
 		}

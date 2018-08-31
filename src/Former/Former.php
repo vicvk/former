@@ -252,11 +252,21 @@ class Former
 	 */
 	public function getPost($name, $fallback = null)
 	{
-		$name     = str_replace(array('[', ']'), array('.', ''), $name);
-		$name     = trim($name, '.');
-		$oldValue = $this->app['request']->old($name, $fallback);
+		// vicvk: Original Former class populates values passed via GET or POST into the form 
+		// and these GET or POST values have very high priority, overwriting the values 
+		// that I'm trying to populate via Former::populate(). I absolutely dislike the 
+		// fact that instead of values passed via Former::populate() I can get unexpected 
+		// values from GET or POST. So I disabled Former ability to auto populate 
+		// GET or POST parameters.
 
-		return $this->app['request']->input($name, $oldValue, true);
+		/// vicvk: always ignore values passed via GET or POST
+		///$name     = str_replace(array('[', ']'), array('.', ''), $name);
+		///$name     = trim($name, '.');
+		///$oldValue = $this->app['request']->old($name, $fallback);
+		///
+		///return $this->app['request']->input($name, $oldValue, true);
+
+		return $fallback;
 	}
 
 	////////////////////////////////////////////////////////////////////
